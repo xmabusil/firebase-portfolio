@@ -1,17 +1,20 @@
 <?php
 
-  // trim() function strips any white space from beginning and end of the string
-  $email = filter_var(trim($_POST["form_email"]), FILTER_SANITIZE_EMAIL);
-  //  strip_tags() function strips all HTML and PHP tags from a variable.
-  $message = strip_tags($_POST["form_msg"]);
+  
 
-  // Check that data was sent to the mailer.
-  if ( empty($message) OR !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    // Set a 400 (bad request) response code and exit.
-    http_response_code(400);
-    echo "Oops! There was a problem with your submission. Please complete the form and try again.";
-    exit;
-  }
+  // EMAIL
+if (empty($_POST["form_email"])) {
+  $errorMSG .= "Email is required ";
+} else {
+  $email = $_POST["email"];
+}
+
+// MESSAGE
+if (empty($_POST["form_msg"])) {
+  $errorMSG .= "Message is required ";
+} else {
+  $message = $_POST["message"];
+}
 
   // Set the recipient email address.
   $recipient = "santos_94@outlook.com";
@@ -23,7 +26,7 @@
   $body .= "Message: \n$message\n";
 
   // success
-  $success = mail($recipient, $subject, $body, "From:" . $email);
+  $success = mail($recipient, $subject, $body, "From:".$email);
 
   // Send the email.
   if ($success) {
